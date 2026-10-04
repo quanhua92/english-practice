@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Song & Script · Handwriting worksheets</title>
+  <style>
+    :root { color-scheme: light; font-family: Arial, sans-serif; color: #263a38; background: #f4f3ed; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    .app-header { max-width: 1260px; margin: auto; padding: 36px 32px 26px; }
+    .brand { font-size: 13px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #44766b; }
+    .back-link { display: inline-block; margin-bottom: 22px; font-size: 13px; color: #44766b; text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+    .back-link:focus-visible { outline: 3px solid #85bdab; outline-offset: 4px; }
+    h1 { font-family: Georgia, serif; font-size: clamp(28px, 4vw, 42px); font-weight: 400; margin: 14px 0 10px; }
+    .intro { color: #657570; line-height: 1.6; margin: 0; }
+    main { max-width: 1260px; padding: 0 32px 40px; margin: auto; display: grid; grid-template-columns: 340px minmax(0, 1fr); gap: 28px; align-items: start; }
+    .controls { background: #fff; border: 1px solid #dfe4dd; border-radius: 18px; padding: 24px; position: sticky; top: 20px; box-shadow: 0 8px 30px #233f3505; }
+    label, .field-label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 9px; }
+    input, textarea, select { width: 100%; font: inherit; color: inherit; border: 1px solid #cdd7d0; border-radius: 8px; padding: 11px 12px; background: #fff; }
+    input:focus, textarea:focus, select:focus { outline: 3px solid #bdded3; border-color: #44766b; }
+    textarea { min-height: 260px; resize: vertical; font-size: 14px; line-height: 1.6; }
+    .field { margin-bottom: 20px; }
+    .hint { font-size: 12px; line-height: 1.6; color: #718079; margin: 7px 0 0; }
+    .check { display: flex; align-items: center; gap: 9px; font-weight: 400; line-height: 1.5; }
+    .check input { width: 16px; height: 16px; accent-color: #296b5c; }
+    button { width: 100%; border: 0; border-radius: 10px; background: #286a59; color: #fff; font-size: 15px; font-weight: 700; padding: 15px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; }
+    button:hover { background: #1c5143; }
+    button:focus-visible { outline: 3px solid #85bdab; outline-offset: 3px; }
+    button:disabled { opacity: .45; cursor: not-allowed; }
+    .preview-bar { display: flex; justify-content: space-between; margin: 3px 0 15px; color: #63766e; font-size: 12px; gap: 10px; }
+    .preview-bar strong { letter-spacing: .12em; font-size: 11px; }
+    .paper-scroll { overflow-x: auto; padding: 1px 2px 20px; }
+    .sheet { width: 210mm; height: 297mm; padding: 14mm; background: white; color: #28352f; margin: 0 auto 24px; box-shadow: 0 5px 22px #273c3412; display: flex; flex-direction: column; }
+    .sheet-head { height: 37mm; flex: 0 0 37mm; }
+    .eyebrow { font: 700 8pt Arial, sans-serif; letter-spacing: 1.6px; text-transform: uppercase; color: #64786d; }
+    .sheet h2 { font: 400 23pt Georgia, serif; margin: 3mm 0 4mm; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+    .student { display: flex; gap: 9mm; font: 9pt Arial, sans-serif; color: #657269; }
+    .student span { display: flex; gap: 2mm; align-items: end; }
+    .student i { width: 52mm; border-bottom: 1px solid #a5aea8; }
+    .student span:last-child i { width: 28mm; }
+    .column-head { display: grid; grid-template-columns: var(--lyric-width, 43%) minmax(0, 1fr); font: 700 8pt Arial, sans-serif; letter-spacing: 1px; text-transform: uppercase; height: 9mm; flex: 0 0 9mm; border-bottom: 1px solid #9aaa9f; }
+    .column-head span:last-child { padding-left: 6mm; }
+    .rows { flex: 1; min-height: 0; display: grid; }
+    .row { display: grid; grid-template-columns: var(--lyric-width, 43%) minmax(0, 1fr); min-height: 0; border-bottom: 1px solid #e1e5e1; }
+    input[type="range"] { padding: 8px 0; accent-color: #286a59; cursor: pointer; }
+    .split-labels { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: #63766e; }
+    .lyric { padding: 2mm 5mm 2mm 0; display: flex; align-items: center; white-space: pre-wrap; overflow-wrap: anywhere; font: 11pt/1.4 Arial, sans-serif; }
+    .practice { margin: 0 0 0 6mm; display: flex; align-items: center; }
+    .ruling { width: 100%; height: 11mm; position: relative; border-bottom: 1px solid #899b90; }
+    .guided .ruling { border-top: 1px solid #bac6bd; }
+    .guided .ruling::after { content: ''; position: absolute; top: 50%; left: 0; right: 0; border-top: 1px dashed #b5c1b8; }
+    .sheet-foot { height: 11mm; flex: 0 0 11mm; display: flex; align-items: end; justify-content: space-between; color: #76837a; font: 8pt Arial, sans-serif; }
+    .empty { background: #eaf0e9; border: 1px dashed #b9cabc; padding: 42px 28px; border-radius: 14px; text-align: center; color: #64796b; line-height: 1.7; }
+    .empty strong { display: block; font: 25px Georgia, serif; color: #345849; margin-bottom: 12px; }
+    @media (max-width: 1050px) { main { grid-template-columns: 1fr; } .controls { position: static; } textarea { min-height: 190px; } }
+    @media (max-width: 600px) { main { padding: 0 16px 24px; } .app-header { padding: 26px 16px; } }
+    @page { size: A4 portrait; margin: 0; }
+    @media print {
+      html, body { background: #fff; margin: 0; padding: 0; }
+      .app-header, .controls, .preview-bar, .empty { display: none !important; }
+      main, .preview, .paper-scroll { display: block; margin: 0; padding: 0; overflow: visible; max-width: none; }
+      .sheet { margin: 0; box-shadow: none; break-after: page; page-break-after: always; }
+      .sheet:last-child { break-after: auto; page-break-after: auto; }
+      .row { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <a class="back-link" href="index.html">← All English practices</a>
+    <div class="brand">Song & Script</div>
+    <h1>A favourite song. A little practice.</h1>
+    <p class="intro">Turn lyrics into a calm, roomy handwriting worksheet. Paste, print, and pick up a pencil.</p>
+  </header>
+  <main>
+    <section class="controls" aria-label="Worksheet settings">
+      <div class="field"><label for="title">Song title</label><input id="title" value="Proud of You" maxlength="100"></div>
+      <div class="field"><label for="lyrics">Paste the full lyrics</label><textarea id="lyrics" placeholder="Paste your song here…&#10;&#10;Each line becomes one handwriting row." spellcheck="false"></textarea><p class="hint">Blank lines are skipped. Long lines wrap into extra practice rows so everything stays readable.</p></div>
+      <div class="field"><label for="spacing">Writing space</label><select id="spacing"><option value="10">Extra roomy · 10 rows per page</option><option value="13" selected>Roomy · 13 rows per page</option><option value="16">Compact · 16 rows per page</option></select></div>
+      <div class="field"><label for="columnSplit">Column proportions</label><input type="range" id="columnSplit" min="25" max="70" value="43" step="1" aria-describedby="splitHint"><div class="split-labels"><output id="lyricPercent" for="columnSplit">Lyrics 43%</output><output id="practicePercent" for="columnSplit">Practice 57%</output></div><p class="hint" id="splitHint">Move right for wider lyrics, or left for more handwriting space. Applies to printed pages too.</p></div>
+      <div class="field"><label class="check"><input type="checkbox" id="guides" checked> Add handwriting guide lines</label><p class="hint">A top line and dotted middle line help with letter height.</p></div>
+      <button id="print" disabled><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M6 9V3h12v6M6 18H3V9h18v9h-3M6 14h12v7H6z"/></svg>Print A4 worksheet</button>
+      <p class="hint">In the print dialog, choose A4, 100% scale, and turn off headers and footers. You can also save as PDF.</p>
+    </section>
+    <section class="preview" aria-label="Worksheet preview">
+      <div class="preview-bar"><strong>PRINT PREVIEW</strong><span id="status" aria-live="polite">A4 · Portrait</span></div>
+      <div class="paper-scroll" id="pages"><div class="empty"><strong>Make their favourite song a worksheet.</strong>Paste the lyrics on the left to see your printable pages here.<br>Lyrics on one side. Room to write on the other.</div></div>
+    </section>
+  </main>
+  <script>
+    const $ = id => document.getElementById(id);
+    const canvas = document.createElement('canvas');
+    const measure = canvas.getContext('2d');
+    measure.font = '11pt Arial';
+    // Match the printed lyric column minus padding, with a little room for font differences.
+    function wrapLine(line, maxWidth) {
+      const output = [];
+      let current = '';
+      for (const word of line.split(/\s+/)) {
+        if (current && measure.measureText(current + ' ' + word).width > maxWidth) {
+          output.push(current); current = '';
+        }
+        if (measure.measureText(word).width > maxWidth) {
+          for (const char of word) {
+            if (current && measure.measureText(current + char).width > maxWidth) {
+              output.push(current); current = '';
+            }
+            current += char;
+          }
+        } else { current += (current ? ' ' : '') + word; }
+      }
+      if (current) output.push(current);
+      return output;
+    }
+    function element(tag, className, content) {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (content !== undefined) node.textContent = content;
+      return node;
+    }
+    const empty = $('pages').firstElementChild.cloneNode(true);
+    function render() {
+      const lyricPercent = Number($('columnSplit').value);
+      $('lyricPercent').textContent = `Lyrics ${lyricPercent}%`;
+      $('practicePercent').textContent = `Practice ${100 - lyricPercent}%`;
+      $('columnSplit').setAttribute('aria-valuetext', `${lyricPercent}% lyrics, ${100 - lyricPercent}% handwriting space`);
+      const maxWidth = (182 * lyricPercent / 100 - 5) * 96 / 25.4 - 5;
+      const lines = $('lyrics').value.split(/\r?\n/).map(s => s.trim()).filter(Boolean).flatMap(line => wrapLine(line, maxWidth));
+      const perPage = Number($('spacing').value);
+      const pageCount = Math.ceil(lines.length / perPage);
+      $('pages').replaceChildren();
+      $('print').disabled = !lines.length;
+      $('status').textContent = pageCount ? `${pageCount} ${pageCount === 1 ? 'page' : 'pages'} · A4 · Portrait` : 'A4 · Portrait';
+      if (!lines.length) { $('pages').append(empty.cloneNode(true)); return; }
+      const fragment = document.createDocumentFragment();
+      for (let page = 0; page < pageCount; page++) {
+        const sheet = element('article', 'sheet' + ($('guides').checked ? ' guided' : ''));
+        sheet.style.setProperty('--lyric-width', `${lyricPercent}%`);
+        const head = element('header', 'sheet-head');
+        head.append(element('div', 'eyebrow', 'My song · Handwriting practice'), element('h2', '', $('title').value.trim() || 'My favourite song'));
+        const student = element('div', 'student');
+        for (const label of ['Name', 'Date']) { const span = element('span', '', label); span.append(element('i')); student.append(span); }
+        head.append(student);
+        const columns = element('div', 'column-head');
+        columns.append(element('span', '', 'Read the lyrics'), element('span', '', 'Write them here'));
+        const rows = element('div', 'rows');
+        rows.style.gridTemplateRows = `repeat(${perPage}, 1fr)`;
+        for (let row = 0; row < perPage; row++) {
+          const pair = element('div', 'row');
+          const practice = element('div', 'practice'); practice.append(element('div', 'ruling'));
+          pair.append(element('div', 'lyric', lines[page * perPage + row] || ''), practice);
+          rows.append(pair);
+        }
+        const foot = element('footer', 'sheet-foot');
+        foot.append(element('span', '', 'Read it. Sing it. Write it.'), element('span', '', `${page + 1} / ${pageCount}`));
+        sheet.append(head, columns, rows, foot); fragment.append(sheet);
+      }
+      $('pages').append(fragment);
+    }
+    let pending;
+    for (const id of ['title', 'lyrics', 'spacing', 'guides', 'columnSplit']) $(id).addEventListener('input', () => { clearTimeout(pending); pending = setTimeout(render, 120); });
+    $('print').addEventListener('click', () => { render(); window.print(); });
+    window.addEventListener('beforeprint', render);
+  </script>
+</body>
+</html>
